@@ -43,11 +43,18 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-src/Test/
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
+src/src/Test/
+src/src/nbproject/private/
+src/build/
+src/nbbuild/
+src/dist/
+src/nbdist/
+src/nbactions.xml
+src/nb-configuration.xml
+
+lib/*/build/
+lib/*/nbbuild/
+lib/*/dist/
+lib/*/nbdist/
+lib/*/nbactions.xml
+lib/*/nb-configuration.xml
