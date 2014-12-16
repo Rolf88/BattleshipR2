@@ -10,9 +10,9 @@ import battleship.interfaces.Board;
 import battleship.interfaces.Fleet;
 import battleship.interfaces.Position;
 import battleship.interfaces.Ship;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -24,29 +24,35 @@ import java.util.logging.Logger;
  */
 public class Ai1 implements BattleshipsPlayer {
 
-    private final static Random rnd = new Random();
+    private final static boolean DEBUG_MODE = false;
 
-    private int nextX;
-    private int nextY;
+    private final static Random rnd = new Random();
 
     private int sizeX;
     private int sizeY;
     private int[][] map;
 
-    private final List<Position> history = new LinkedList<>();
-    private final Stack<Position> scheduled = new Stack<>();
-
-    private ArrayList<Pos> emptyfields;
+    private Stack<Position> history;
+    private Queue<Position> scheduled;
+    private List<Position> possiblePositions;
 
     private final Test test;
 
     public Ai1() {
-        test = new Test();
-        test.setVisible(true);
+        if (DEBUG_MODE) {
+            test = new Test();
+            test.setVisible(true);
+        } else {
+            test = null;
+        }
     }
 
     @Override
     public void placeShips(Fleet fleet, Board board) {
+        this.history = new Stack<>();
+        this.scheduled = new LinkedList<>();
+        this.possiblePositions = new LinkedList<>();
+
         // Save the size of the board
         this.sizeX = board.sizeX();
         this.sizeY = board.sizeY();
@@ -56,19 +62,10 @@ public class Ai1 implements BattleshipsPlayer {
         for (int x = 0; x < this.sizeX; x++) {
             for (int y = 0; y < this.sizeY; y++) {
                 this.map[x][y] = 0;
+
+                this.possiblePositions.add(new Position(x, y));
             }
         }
-
-        emptyfields = new ArrayList<>();
-        for (int y = 0; y < board.sizeY(); ++y) {
-            for (int x = 0; x < board.sizeX(); ++x) {
-
-                emptyfields.add(new Pos(x, y));
-            }
-        }
-
-        nextX = 0;
-        nextY = 0;
 
         for (int i = 0; i < fleet.getNumberOfShips(); ++i) {
             Ship s = fleet.getShip(i);
@@ -98,35 +95,28 @@ public class Ai1 implements BattleshipsPlayer {
 
     @Override
     public Position getFireCoordinates(Fleet enemyShips) {
-//        Position shot = new Position(nextX, nextY);
-//        ++nextX;
-//        if (nextX >= sizeX) {
-//            nextX = 0;
-//            ++nextY;
-//            if (nextY >= sizeY) {
-//                nextY = 0;
-//            }
-//        }
-//        return shot;
         if (!this.scheduled.isEmpty()) {
-            Position position = this.scheduled.pop();
+            Position position;
 
-            for (int i = emptyfields.size() - 1; i >= 0; i--) {
-                Pos posi = emptyfields.get(i);
-                if (posi.getX() == position.x && posi.getY() == position.y) {
-                    emptyfields.remove(i);
-                }
+            do {
+                position = this.scheduled.poll();
+            } while (this.history.contains(position));
+
+            if (position != null) {
+                return getEnsuredPosition(position);
             }
-            this.history.add(position);
-            return position;
         }
+        Position position;
+        do {
+            int index = rnd.nextInt(possiblePositions.size());
+            position = possiblePositions.get(index);
+        } while (this.history.contains(position));
 
-        int index = rnd.nextInt(emptyfields.size());
-        Pos p = emptyfields.get(index);
-        emptyfields.remove(index);
+        return getEnsuredPosition(position);
+    }
 
-        Position position = new Position(p.getX(), p.getY());
-
+    private Position getEnsuredPosition(Position position) {
+        this.possiblePositions.remove(position);
         this.history.add(position);
 
         return position;
@@ -135,10 +125,9 @@ public class Ai1 implements BattleshipsPlayer {
     int i;
 
     @Override
-    public void hitFeedBack(boolean hit, Fleet enemyShips
-    ) {
+    public void hitFeedBack(boolean hit, Fleet enemyShips) {
 
-        Position position = this.history.get(this.history.size() - 1);
+        Position position = this.history.lastElement();
 
         if (this.map[position.x][position.y] == 0) {
             this.map[position.x][position.y] = 1;
@@ -153,23 +142,23 @@ public class Ai1 implements BattleshipsPlayer {
             scheduleFirePosition(position.x + 1, position.y);
         }
 
-        System.out.println(enemyShips.getNumberOfShips());
+        if (DEBUG_MODE) {
+            this.test.redrawGrid(this.map);
 
-        this.test.redrawGrid(this.map);
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Ai1.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Ai1.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     private void scheduleFirePosition(int x, int y) {
-        boolean isValidHeight = (y >= 0 && y <= this.sizeY);
-        boolean isValidWidth = (x >= 0 && x <= this.sizeX);
+        boolean isValidHeight = (y >= 0 && y <= this.sizeY + 1);
+        boolean isValidWidth = (x >= 0 && x <= this.sizeX + 1);
 
         if (isValidHeight && isValidWidth && this.map[x][y] == 0) {
-            Position upper = new Position(x, y);
-            this.scheduled.add(upper);
+            this.scheduled.offer(new Position(x, y));
         }
     }
 
@@ -186,11 +175,6 @@ public class Ai1 implements BattleshipsPlayer {
     @Override
     public void endRound(int round, int points, int enemyPoints) {
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Ai1.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     @Override
