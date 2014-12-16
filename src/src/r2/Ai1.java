@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,7 +34,7 @@ public class Ai1 implements BattleshipsPlayer {
     private int[][] map;
 
     private final List<Position> history = new LinkedList<>();
-    private final List<Position> scheduled = new LinkedList<>();
+    private final Stack<Position> scheduled = new Stack<>();
 
     private ArrayList<Pos> emptyfields;
 
@@ -109,9 +109,15 @@ public class Ai1 implements BattleshipsPlayer {
 //        }
 //        return shot;
         if (!this.scheduled.isEmpty()) {
-            Position position = this.scheduled.get(0);
-            this.scheduled.remove(position);
+            Position position = this.scheduled.pop();
 
+            for (int i = emptyfields.size() - 1; i >= 0; i--) {
+                Pos posi = emptyfields.get(i);
+                if (posi.getX() == position.x && posi.getY() == position.y) {
+                    emptyfields.remove(i);
+                }
+            }
+            this.history.add(position);
             return position;
         }
 
@@ -129,11 +135,14 @@ public class Ai1 implements BattleshipsPlayer {
     int i;
 
     @Override
-    public void hitFeedBack(boolean hit, Fleet enemyShips) {
+    public void hitFeedBack(boolean hit, Fleet enemyShips
+    ) {
 
         Position position = this.history.get(this.history.size() - 1);
 
-        this.map[position.x][position.y] = 1;
+        if (this.map[position.x][position.y] == 0) {
+            this.map[position.x][position.y] = 1;
+        }
 
         if (hit == true) {
             this.map[position.x][position.y] = 2;
@@ -143,6 +152,8 @@ public class Ai1 implements BattleshipsPlayer {
             scheduleFirePosition(position.x - 1, position.y);
             scheduleFirePosition(position.x + 1, position.y);
         }
+
+        System.out.println(enemyShips.getNumberOfShips());
 
         this.test.redrawGrid(this.map);
         try {
@@ -174,8 +185,9 @@ public class Ai1 implements BattleshipsPlayer {
 
     @Override
     public void endRound(int round, int points, int enemyPoints) {
+
         try {
-            Thread.sleep(20000);
+            Thread.sleep(2000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Ai1.class.getName()).log(Level.SEVERE, null, ex);
         }

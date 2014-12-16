@@ -29,7 +29,7 @@ public class R2 {
      */
     public static void main(String[] args) {
         BattleshipsPlayer player1 = new Ai1();
-        BattleshipsPlayer player2 = new SystematicShotPlayer();
+        BattleshipsPlayer player2 = new RandomPlayer();
         GameInstance<BattleshipsPlayer> game = Battleships.getSingleGameInstance();
         GameResult res = game.run(player1, player2);     
         
