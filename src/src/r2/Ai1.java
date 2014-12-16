@@ -59,7 +59,7 @@ public class Ai1 implements BattleshipsPlayer {
                 int x = rnd.nextInt(sizeX);
                 int y = rnd.nextInt(sizeY - (s.size() - 1));
                 pos = new Position(x, y);
-                checkPos = new boolean[x][y];
+//                checkPos = new boolean[x][y];
             } else {
                 int x = rnd.nextInt(sizeX - (s.size() - 1));
                 int y = rnd.nextInt(sizeY);
