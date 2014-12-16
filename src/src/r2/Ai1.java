@@ -11,8 +11,12 @@ import battleship.interfaces.Fleet;
 import battleship.interfaces.Position;
 import battleship.interfaces.Ship;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,7 +33,17 @@ public class Ai1 implements BattleshipsPlayer {
     private int sizeY;
     private int[][] map;
 
+    private final List<Position> history = new LinkedList<>();
+    private final List<Position> scheduled = new LinkedList<>();
+
     private ArrayList<Pos> emptyfields;
+
+    private final Test test;
+
+    public Ai1() {
+        test = new Test();
+        test.setVisible(true);
+    }
 
     @Override
     public void placeShips(Fleet fleet, Board board) {
@@ -44,7 +58,6 @@ public class Ai1 implements BattleshipsPlayer {
                 this.map[x][y] = 0;
             }
         }
-        
 
         emptyfields = new ArrayList<>();
         for (int y = 0; y < board.sizeY(); ++y) {
@@ -95,15 +108,58 @@ public class Ai1 implements BattleshipsPlayer {
 //            }
 //        }
 //        return shot;
+        if (!this.scheduled.isEmpty()) {
+            Position position = this.scheduled.get(0);
+            this.scheduled.remove(position);
+
+            return position;
+        }
+
         int index = rnd.nextInt(emptyfields.size());
         Pos p = emptyfields.get(index);
         emptyfields.remove(index);
-        return new Position(p.getX(), p.getY());
+
+        Position position = new Position(p.getX(), p.getY());
+
+        this.history.add(position);
+
+        return position;
     }
+
+    int i;
 
     @Override
     public void hitFeedBack(boolean hit, Fleet enemyShips) {
-        //Do nothing
+
+        Position position = this.history.get(this.history.size() - 1);
+
+        this.map[position.x][position.y] = 1;
+
+        if (hit == true) {
+            this.map[position.x][position.y] = 2;
+
+            scheduleFirePosition(position.x, position.y - 1);
+            scheduleFirePosition(position.x, position.y + 1);
+            scheduleFirePosition(position.x - 1, position.y);
+            scheduleFirePosition(position.x + 1, position.y);
+        }
+
+        this.test.redrawGrid(this.map);
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Ai1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void scheduleFirePosition(int x, int y) {
+        boolean isValidHeight = (y >= 0 && y <= this.sizeY);
+        boolean isValidWidth = (x >= 0 && x <= this.sizeX);
+
+        if (isValidHeight && isValidWidth && this.map[x][y] == 0) {
+            Position upper = new Position(x, y);
+            this.scheduled.add(upper);
+        }
     }
 
     @Override
@@ -113,12 +169,16 @@ public class Ai1 implements BattleshipsPlayer {
 
     @Override
     public void startRound(int round) {
-        //Do nothing
+
     }
 
     @Override
     public void endRound(int round, int points, int enemyPoints) {
-        //Do nothing
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Ai1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
