@@ -7,41 +7,61 @@ import javax.swing.JComponent;
 
 public class GridView extends JComponent {
 
-    int width, height;
-
     private int[][] arr;
 
-    GridView(int w, int h) {
-        setSize(width = w, height = h);
-    }
+    private int columnWidth;
+    private int rowHeight;
+
+    private int rows;
+    private int columns;
+
+    private boolean isPaintable = false;
 
     @Override
     public void paint(Graphics g) {
-        width = getSize().width;
-        height = getSize().height;
-
-        int htOfRow = 40;
-        int wdOfRow = 40;
-
-        if (this.arr != null) {
-            for (int x = 0; x < arr.length; x++) {
-                for (int y = 0; y < arr[x].length; y++) {
-                    if (this.arr[x][y] == 1) {
-                        g.setColor(Color.YELLOW);
-                    }else if (this.arr[x][y] == 2) {
-                        g.setColor(Color.RED);
-                    }else{
-                        g.setColor(Color.BLACK);
-                    }
-
-                    g.fillRect(x * wdOfRow, y * htOfRow, wdOfRow, htOfRow);
-                }
-            }
+        if (!isPaintable) {
+            return;
         }
 
+        for (int x = 0; x < columns; x++) {
+            for (int y = 0; y < rows; y++) {
+                int currentValue = this.arr[x][y];
+
+                switch (currentValue) {
+                    case -1:
+                        g.setColor(Color.WHITE);
+                        break;
+                    case 0:
+                        g.setColor(Color.BLACK);
+                        break;
+                    case 1:
+                        g.setColor(Color.YELLOW);
+                        break;
+                    case 2:
+                        g.setColor(Color.RED);
+                        break;
+                    default:
+                        g.setColor(Color.BLUE);
+                        break;
+                }
+
+                g.fillRect(x * columnWidth, y * rowHeight, columnWidth, rowHeight);
+            }
+        }
     }
 
     void setGrid(int[][] arr) {
+        int width = getSize().width;
+        int height = getSize().height;
+
         this.arr = arr;
+
+        this.columns = this.arr.length;
+        this.rows = this.arr[0].length;
+
+        this.rowHeight = height / this.rows;
+        this.columnWidth = width / this.columns;
+
+        this.isPaintable = true;
     }
 }

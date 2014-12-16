@@ -1,22 +1,23 @@
 package r2;
 
+import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import javax.swing.JList;
 
-public class Test extends JFrame {
+public class DebugFrame extends JFrame {
 
-    private int width = 600;
-    private int height = 600;
+    private final int width = 800;
+    private final int height = 800;
 
-    private GridView grid;
-    private JList list;
+    private final GridView grid;
 
-    public Test() {
+    public DebugFrame() {
+        this.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(this.width, this.height);
+        this.setLayout(new BorderLayout());
 
-        this.grid = new GridView(this.width, this.height);
-        add(this.grid);
-        
+        this.grid = new GridView();
+        this.add(this.grid);
     }
 
     public void redrawGrid(int[][] arr) {

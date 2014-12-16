@@ -17,6 +17,7 @@ import java.util.Random;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -36,14 +37,11 @@ public class Ai1 implements BattleshipsPlayer {
     private Queue<Position> scheduled;
     private List<Position> possiblePositions;
 
-    private final Test test;
+    private DebugFrame debugFrame;
 
     public Ai1() {
         if (DEBUG_MODE) {
-            test = new Test();
-            test.setVisible(true);
-        } else {
-            test = null;
+            this.debugFrame = new DebugFrame();
         }
     }
 
@@ -59,9 +57,16 @@ public class Ai1 implements BattleshipsPlayer {
 
         // Create a map
         this.map = new int[this.sizeX][this.sizeY];
+
         for (int x = 0; x < this.sizeX; x++) {
             for (int y = 0; y < this.sizeY; y++) {
-                this.map[x][y] = 0;
+                boolean isWhite = ((y + x) % 2) == 0;
+
+                if (isWhite) {
+                    this.map[x][y] = -1;
+                } else {
+                    this.map[x][y] = 0;
+                }
 
                 this.possiblePositions.add(new Position(x, y));
             }
@@ -106,13 +111,28 @@ public class Ai1 implements BattleshipsPlayer {
                 return getEnsuredPosition(position);
             }
         }
+
+        List<Position> positions = getBestPositions();
+
         Position position;
         do {
-            int index = rnd.nextInt(possiblePositions.size());
-            position = possiblePositions.get(index);
+            int index = rnd.nextInt(positions.size());
+            position = positions.get(index);
         } while (this.history.contains(position));
 
         return getEnsuredPosition(position);
+    }
+
+    private List<Position> getBestPositions() {
+        List<Position> positions = new LinkedList<>();
+
+        for (Position position : this.possiblePositions) {
+            if (this.map[position.x][position.y] == 0) {
+                positions.add(position);
+            }
+        }
+
+        return positions;
     }
 
     private Position getEnsuredPosition(Position position) {
@@ -122,28 +142,26 @@ public class Ai1 implements BattleshipsPlayer {
         return position;
     }
 
-    int i;
-
     @Override
     public void hitFeedBack(boolean hit, Fleet enemyShips) {
-
         Position position = this.history.lastElement();
 
-        if (this.map[position.x][position.y] == 0) {
+        if (this.map[position.x][position.y] <= 0) {
             this.map[position.x][position.y] = 1;
         }
 
-        if (hit == true) {
+        if (hit) {
             this.map[position.x][position.y] = 2;
 
+            // Lets us fire around the current hit position
             scheduleFirePosition(position.x, position.y - 1);
-            scheduleFirePosition(position.x, position.y + 1);
             scheduleFirePosition(position.x - 1, position.y);
+            scheduleFirePosition(position.x, position.y + 1);
             scheduleFirePosition(position.x + 1, position.y);
         }
 
         if (DEBUG_MODE) {
-            this.test.redrawGrid(this.map);
+            this.debugFrame.redrawGrid(this.map);
 
             try {
                 Thread.sleep(20);
@@ -157,7 +175,7 @@ public class Ai1 implements BattleshipsPlayer {
         boolean isValidHeight = (y >= 0 && y <= this.sizeY + 1);
         boolean isValidWidth = (x >= 0 && x <= this.sizeX + 1);
 
-        if (isValidHeight && isValidWidth && this.map[x][y] == 0) {
+        if (isValidHeight && isValidWidth && this.map[x][y] <= 0) {
             this.scheduled.offer(new Position(x, y));
         }
     }
@@ -174,7 +192,6 @@ public class Ai1 implements BattleshipsPlayer {
 
     @Override
     public void endRound(int round, int points, int enemyPoints) {
-
     }
 
     @Override
