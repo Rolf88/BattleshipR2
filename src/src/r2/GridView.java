@@ -40,6 +40,9 @@ public class GridView extends JComponent {
                     case 2:
                         g.setColor(Color.RED);
                         break;
+                    case 3:
+                        g.setColor(Color.GREEN);
+                        break;
                     default:
                         g.setColor(Color.BLUE);
                         break;
