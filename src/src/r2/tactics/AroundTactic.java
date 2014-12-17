@@ -43,4 +43,8 @@ public class AroundTactic implements ITactic {
             this.scheduled.offer(new Position(x, y));
         }
     }
+
+    @Override
+    public void isUnsuccessfulHit(Position position, int[][] map) {
+    }
 }

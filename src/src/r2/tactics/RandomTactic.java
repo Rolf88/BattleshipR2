@@ -39,4 +39,7 @@ public class RandomTactic implements ITactic {
     public void isSuccessfulHit(Position position, int[][] map) {
     }
 
+    @Override
+    public void isUnsuccessfulHit(Position position, int[][] map) {
+    }
 }

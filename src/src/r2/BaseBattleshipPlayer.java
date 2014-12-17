@@ -139,15 +139,19 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
     public void hitFeedBack(boolean hit, Fleet enemyShips) {
         Position position = this.history.lastElement();
 
-        if (this.map[position.x][position.y] <= 0) {
-            this.map[position.x][position.y] = 1;
-        }
-
         if (hit) {
             this.map[position.x][position.y] = 2;
 
             for (ITactic tactic : this.tactics) {
                 tactic.isSuccessfulHit(position, this.map);
+            }
+        } else {
+            if (this.map[position.x][position.y] <= 0) {
+                this.map[position.x][position.y] = 1;
+            }
+
+            for (ITactic tactic : this.tactics) {
+                tactic.isUnsuccessfulHit(position, this.map);
             }
         }
 

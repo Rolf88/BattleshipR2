@@ -98,6 +98,10 @@ public class ChessboardTactic implements ITactic {
         return 3;
     }
 
+    @Override
+    public void isUnsuccessfulHit(Position position, int[][] map) {
+    }
+    
     private class Node {
 
         int gridNumber;
