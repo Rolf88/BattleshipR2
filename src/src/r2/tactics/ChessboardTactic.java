@@ -58,7 +58,7 @@ public class ChessboardTactic implements ITactic {
                 int gridNumber = getGridNumber(x, y, width_middle, height_middle);
 
                 if (item == 0) {
-                    grid[gridNumber].add(new Node(gridNumber, x, y, item));
+                    grid[gridNumber].add(new Node(x, y, item));
                 }
             }
         }
@@ -101,16 +101,14 @@ public class ChessboardTactic implements ITactic {
     @Override
     public void isUnsuccessfulHit(Position position, int[][] map) {
     }
-    
+
     private class Node {
 
-        int gridNumber;
         int x;
         int y;
         int value;
 
-        private Node(int gridNumber, int x, int y, int value) {
-            this.gridNumber = gridNumber;
+        private Node(int x, int y, int value) {
             this.x = x;
             this.y = y;
             this.value = value;
