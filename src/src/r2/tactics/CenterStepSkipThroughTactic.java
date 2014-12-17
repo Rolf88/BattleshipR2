@@ -8,20 +8,22 @@ public class CenterStepSkipThroughTactic implements ITactic {
     private final int sizeX;
     private final int sizeY;
     private final int skipEvery;
+    private final int tacticPercent;
 
     private int circles = 0;
 
-    public CenterStepSkipThroughTactic(int sizeX, int sizeY, int skipEvery) {
+    public CenterStepSkipThroughTactic(int sizeX, int sizeY, int skipEvery, int tacticPercent) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.skipEvery = skipEvery;
+        this.tacticPercent = tacticPercent;
     }
 
     @Override
     public boolean isGoodTactic(int[][] map) {
         double precent = (100 / sizeX) * circles;
 
-        return precent < 30;
+        return precent < tacticPercent;
     }
 
     @Override
