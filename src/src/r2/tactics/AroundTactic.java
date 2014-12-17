@@ -11,11 +11,11 @@ public class AroundTactic implements ITactic {
     private final int sizeX;
     private final int sizeY;
 
-    public AroundTactic(int sizeX, int sizeY){
+    public AroundTactic(int sizeX, int sizeY) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
     }
-    
+
     @Override
     public boolean isGoodTactic(int[][] map) {
         return !this.scheduled.isEmpty();
@@ -39,10 +39,6 @@ public class AroundTactic implements ITactic {
         boolean isValidHeight = (y >= 0 && y <= this.sizeY + 1);
         boolean isValidWidth = (x >= 0 && x <= this.sizeX + 1);
         boolean isValidShot = map[x][y] <= 0;
-
-        if (map[x][y] > 0) {
-            System.out.println(map[x][y]);
-        }
 
         if (isValidHeight && isValidWidth && isValidShot) {
             this.scheduled.add(new Position(x, y));
