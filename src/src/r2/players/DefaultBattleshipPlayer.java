@@ -11,6 +11,7 @@ import r2.tactics.RandomTactic;
 import r2.tactics.AroundTactic;
 import r2.domain.IOcean;
 import r2.domain.ITactic;
+import r2.tactics.StepThroughTactic;
 
 /**
  *
@@ -23,7 +24,7 @@ public class DefaultBattleshipPlayer extends BaseBattleshipPlayer {
         return new ITactic[]{
             new AroundTactic(this.sizeX, this.sizeY),
             new ChessboardTactic(this.sizeX, this.sizeY, 5),
-            new RandomTactic()
+            new StepThroughTactic()
         };
     }
 
