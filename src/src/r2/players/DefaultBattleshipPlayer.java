@@ -12,6 +12,7 @@ import r2.domain.IShipPlacer;
 import r2.domain.ITactic;
 import r2.shipPlacers.DefaultShipPlacers;
 import r2.tactics.AroundTactic;
+import r2.tactics.CenterStepSkipThroughTactic;
 import r2.tactics.StepThroughTactic;
 
 /**
@@ -23,8 +24,9 @@ public class DefaultBattleshipPlayer extends BaseBattleshipPlayer {
     @Override
     protected ITactic[] getTactics() {
         return new ITactic[]{
-           // new AroundTactic(this.sizeX, this.sizeY),
-           // new ChessboardTactic(this.sizeX, this.sizeY, 2),
+            new AroundTactic(this.sizeX, this.sizeY),
+            new CenterStepSkipThroughTactic(this.sizeX, this.sizeY, 6, 0),
+            new ChessboardTactic(this.sizeX, this.sizeY, 2),
             new StepThroughTactic()
         };
     }

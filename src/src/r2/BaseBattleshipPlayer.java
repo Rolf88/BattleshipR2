@@ -30,7 +30,7 @@ import r2.domain.models.ShipPlacement;
  */
 public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
-    private final static boolean DEBUG_MODE = false;
+    private final static boolean DEBUG_MODE = true;
 
     private ChessTacticAnalyzer chessAnalyzer;
 
