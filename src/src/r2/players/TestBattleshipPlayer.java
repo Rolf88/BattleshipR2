@@ -8,7 +8,9 @@ package r2.players;
 import r2.*;
 import r2.tactics.StepThroughTactic;
 import r2.domain.IOcean;
+import r2.domain.IShipPlacer;
 import r2.domain.ITactic;
+import r2.shipPlacers.DefaultShipPlacers;
 import r2.tactics.AroundTactic;
 import r2.tactics.ChessboardTactic;
 
@@ -32,4 +34,8 @@ public class TestBattleshipPlayer extends BaseBattleshipPlayer {
         return new ChessboardOcean();
     }
 
+    @Override
+    protected IShipPlacer getShipPlacer() {
+        return new DefaultShipPlacers();
+    }
 }

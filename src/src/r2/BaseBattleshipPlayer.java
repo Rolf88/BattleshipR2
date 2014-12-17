@@ -10,12 +10,16 @@ import battleship.interfaces.Board;
 import battleship.interfaces.Fleet;
 import battleship.interfaces.Position;
 import battleship.interfaces.Ship;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import r2.domain.IOcean;
+import r2.domain.IShipPlacer;
 import r2.domain.ITactic;
+import r2.domain.models.ShipPlacement;
 
 /**
  *
@@ -50,6 +54,8 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
     protected abstract IOcean getOcean();
 
+    protected abstract IShipPlacer getShipPlacer();
+
     @Override
     public void placeShips(Fleet fleet, Board board) {
         this.history = new Stack<>();
@@ -66,35 +72,8 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
         this.map = this.getOcean().create(sizeX, sizeY);
         this.opponentMap = this.getOcean().create(sizeX, sizeY);
 
-        // Set the ships
-        for (int i = 0; i < fleet.getNumberOfShips(); ++i) {
-            Ship s = fleet.getShip(i);
-            boolean vertical = rnd.nextBoolean();
-
-            int x, y;
-
-            if (vertical) {
-                x = rnd.nextInt(sizeX);
-                y = rnd.nextInt(sizeY - (s.size() - 1));
-            } else {
-                x = rnd.nextInt(sizeX - (s.size() - 1));
-                y = rnd.nextInt(sizeY);
-            }
-
-            Position pos = new Position(x, y);
-
-            // Lets draw our ships on the opponent map
-            if (vertical) {
-                for (int tempY = pos.y; tempY < (pos.y + s.size()); tempY++) {
-                    this.opponentMap[pos.x][tempY] = 3;
-                }
-            } else {
-                for (int tempX = pos.x; tempX < (pos.x + s.size()); tempX++) {
-                    this.opponentMap[tempX][pos.y] = 3;
-                }
-            }
-
-            board.placeShip(pos, s, vertical);
+        for (ShipPlacement shipPlacement : this.getShipPlacer().placeShips(sizeX, sizeY, fleet)) {
+            board.placeShip(shipPlacement.getPosition(), shipPlacement.getShip(), shipPlacement.isVertical());
         }
     }
 

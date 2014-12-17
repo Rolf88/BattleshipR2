@@ -10,7 +10,9 @@ import r2.tactics.ChessboardTactic;
 import r2.tactics.RandomTactic;
 import r2.tactics.AroundTactic;
 import r2.domain.IOcean;
+import r2.domain.IShipPlacer;
 import r2.domain.ITactic;
+import r2.shipPlacers.DefaultShipPlacers;
 import r2.tactics.StepThroughTactic;
 
 /**
@@ -31,6 +33,11 @@ public class DefaultBattleshipPlayer extends BaseBattleshipPlayer {
     @Override
     protected IOcean getOcean() {
         return new ChessboardOcean();
+    }
+
+    @Override
+    protected IShipPlacer getShipPlacer() {
+        return new DefaultShipPlacers();
     }
 
 }
