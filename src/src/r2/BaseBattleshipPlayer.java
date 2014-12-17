@@ -29,8 +29,6 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
     private final static boolean DEBUG_MODE = false;
 
-    private final static Random rnd = new Random();
-
     private ChessTacticAnalyzer chessAnalyzer;
 
     protected int sizeX;
