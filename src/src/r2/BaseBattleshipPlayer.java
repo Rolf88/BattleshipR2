@@ -9,14 +9,7 @@ import battleship.interfaces.BattleshipsPlayer;
 import battleship.interfaces.Board;
 import battleship.interfaces.Fleet;
 import battleship.interfaces.Position;
-import battleship.interfaces.Ship;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.Stack;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import r2.domain.IOcean;
@@ -31,6 +24,7 @@ import r2.domain.models.ShipPlacement;
 public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
     private final static boolean DEBUG_MODE = true;
+    private final static int DEBUG_SLEEP_TIME = 40;
 
     private ChessTacticAnalyzer chessAnalyzer;
 
@@ -97,7 +91,7 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
             this.debugFrame.redrawOpponentMap(this.opponentMap);
 
             try {
-                Thread.sleep(20);
+                Thread.sleep(DEBUG_SLEEP_TIME);
             } catch (InterruptedException ex) {
                 Logger.getLogger(BaseBattleshipPlayer.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -147,7 +141,7 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
             this.debugFrame.redrawPlayerMap(this.map);
 
             try {
-                Thread.sleep(20);
+                Thread.sleep(DEBUG_SLEEP_TIME);
             } catch (InterruptedException ex) {
                 Logger.getLogger(BaseBattleshipPlayer.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -177,8 +171,8 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
     @Override
     public void endRound(int round, int points, int enemyPoints) {
-        System.out.println("Round #" + round);
-         getHits();
+//        System.out.println("Round #" + round);
+//         getHits();
     }
 
     @Override
