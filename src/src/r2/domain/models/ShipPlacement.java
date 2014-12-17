@@ -17,15 +17,15 @@ public class ShipPlacement {
     }
 
     public Position getPosition() {
-        return position;
+        return this.position;
     }
 
     public int getLength() {
-        return length;
+        return this.length;
     }
 
     public boolean isVertical() {
-        return isVertical;
+        return this.isVertical;
     }
     
     public Ship getShip(){
