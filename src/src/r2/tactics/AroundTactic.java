@@ -35,12 +35,17 @@ public class AroundTactic implements ITactic {
         scheduleFirePosition(position.x + 1, position.y, map);
     }
 
-    private void scheduleFirePosition(int x, int y, int[][] map) { 
+    private void scheduleFirePosition(int x, int y, int[][] map) {
         boolean isValidHeight = (y >= 0 && y <= this.sizeY + 1);
         boolean isValidWidth = (x >= 0 && x <= this.sizeX + 1);
+        boolean isValidShot = map[x][y] <= 0;
 
-        if (isValidHeight && isValidWidth && map[x][y] <= 0) {
-            this.scheduled.offer(new Position(x, y));
+        if (map[x][y] > 0) {
+            System.out.println(map[x][y]);
+        }
+
+        if (isValidHeight && isValidWidth && isValidShot) {
+            this.scheduled.add(new Position(x, y));
         }
     }
 
