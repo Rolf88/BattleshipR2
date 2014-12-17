@@ -21,8 +21,8 @@ public class TestBattleshipPlayer extends BaseBattleshipPlayer {
     @Override
     protected ITactic[] getTactics() {
         return new ITactic[]{
-            new AroundTactic(this.sizeX, this.sizeY),
-            new ChessboardTactic(this.sizeX, this.sizeY, 2),
+           // new AroundTactic(this.sizeX, this.sizeY),
+           // new ChessboardTactic(this.sizeX, this.sizeY, 2),
             new StepThroughTactic()
         };
     }

@@ -9,6 +9,13 @@ import battleship.implementations.Battleships;
 import battleship.interfaces.BattleshipsPlayer;
 import r2.players.DefaultBattleshipPlayer;
 import r2.players.TestBattleshipPlayer;
+import battleship.examples.SystematicShotPlayer;
+import battleship.examples.SystematicShotPlayerFactory;
+import battleship.implementations.Battleships;
+import battleship.interfaces.BattleshipsPlayer;
+import java.util.ArrayList;
+import tournament.Tournament;
+import tournament.game.GameFactory;
 import tournament.game.GameInstance;
 import tournament.game.GameResult;
 import tournament.player.PlayerFactory;
@@ -38,6 +45,7 @@ public class R2 {
         System.out.println("player2 major (Points for the game): " + res.majorPointsB);
         System.out.println("player1 minor (Rounds won): " + res.minorPointsA);
         System.out.println("player2 minor (Rounds won): " + res.minorPointsB);
+
 //        
 //// TODO code application logic here
 //        ArrayList<PlayerFactory<BattleshipsPlayer>> playerFactories = new ArrayList<>();

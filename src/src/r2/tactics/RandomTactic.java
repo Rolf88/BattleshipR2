@@ -22,8 +22,8 @@ public class RandomTactic implements ITactic {
     public Position getBestPosition(int[][] map) {
         List<Position> positions = new LinkedList<>();
 
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[x].length; y++) {
+        for (int y = 0; y < map.length; y++) {
+             for (int x = 0; x < map[y].length; x++){
                 if (map[x][y] <= 0) {
                     positions.add(new Position(x, y));
                 }

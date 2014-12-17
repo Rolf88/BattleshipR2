@@ -12,8 +12,8 @@ public class StepThroughTactic implements ITactic {
 
     @Override
     public Position getBestPosition(int[][] map) {
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[x].length; y++) {
+        for (int y = 0; y < map.length; y++) {
+             for (int x = 0; x < map[y].length; x++){
                 if (map[x][y] <= 0) {
                     return new Position(x, y);
                 }
