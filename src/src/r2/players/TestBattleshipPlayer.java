@@ -13,6 +13,7 @@ import r2.domain.ITactic;
 import r2.shipPlacers.DefaultShipPlacers;
 import r2.tactics.AroundTactic;
 import r2.tactics.ChessboardTactic;
+import r2.tactics.CircleTactic;
 
 /**
  *
@@ -23,8 +24,9 @@ public class TestBattleshipPlayer extends BaseBattleshipPlayer {
     @Override
     protected ITactic[] getTactics() {
         return new ITactic[]{
-           // new AroundTactic(this.sizeX, this.sizeY),
-           // new ChessboardTactic(this.sizeX, this.sizeY, 2),
+            // new AroundTactic(this.sizeX, this.sizeY),
+            // new ChessboardTactic(this.sizeX, this.sizeY, 2),
+            new CircleTactic(this.sizeX, this.sizeY),
             new StepThroughTactic()
         };
     }

@@ -7,12 +7,11 @@ package r2.players;
 
 import r2.*;
 import r2.tactics.ChessboardTactic;
-import r2.tactics.RandomTactic;
-import r2.tactics.AroundTactic;
 import r2.domain.IOcean;
 import r2.domain.IShipPlacer;
 import r2.domain.ITactic;
 import r2.shipPlacers.DefaultShipPlacers;
+import r2.tactics.AroundTactic;
 import r2.tactics.StepThroughTactic;
 
 /**
@@ -25,7 +24,7 @@ public class DefaultBattleshipPlayer extends BaseBattleshipPlayer {
     protected ITactic[] getTactics() {
         return new ITactic[]{
             new AroundTactic(this.sizeX, this.sizeY),
-            new ChessboardTactic(this.sizeX, this.sizeY, 5),
+            new ChessboardTactic(this.sizeX, this.sizeY, 2),
             new StepThroughTactic()
         };
     }
