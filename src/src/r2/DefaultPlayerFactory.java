@@ -13,12 +13,12 @@ import tournament.player.PlayerFactory;
  *
  * @author Tobias Grundtvig
  */
-public class RandomPlayerFactory implements PlayerFactory<BattleshipsPlayer> {
+public class DefaultPlayerFactory implements PlayerFactory<BattleshipsPlayer> {
 
     private static int nextID = 1;
     private final int id;
 
-    public RandomPlayerFactory() {
+    public DefaultPlayerFactory() {
         id = nextID++;
     }
 

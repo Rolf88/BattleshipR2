@@ -28,7 +28,7 @@ public class R2 {
 
     public static PlayerFactory<BattleshipsPlayer> getPlayerFactory() {
 
-        return new RandomPlayerFactory();
+        return new DefaultPlayerFactory();
     }
 
     /**
