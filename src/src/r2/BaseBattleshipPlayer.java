@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import r2.domain.IOcean;
 import r2.domain.IShipPlacer;
 import r2.domain.ITactic;
+import r2.domain.models.Heatmap;
 import r2.domain.models.ShipPlacement;
 
 /**
@@ -24,16 +25,17 @@ import r2.domain.models.ShipPlacement;
 public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
     private final static boolean DEBUG_MODE = true;
-    private final static int DEBUG_SLEEP_TIME = 40;
+    private final static int DEBUG_SLEEP_TIME = 5;
 
     private ChessTacticAnalyzer chessAnalyzer;
+    private HeatmapCalculator heatmapCalculator = new HeatmapCalculator();
 
     protected int sizeX;
     protected int sizeY;
 
     private int[][] map;
     private int[][] opponentMap;
-    private int[][] hitMap = null;
+    private int[][] hitMap;
 
     private ITactic[] tactics;
     private Stack<Position> history;
@@ -67,10 +69,7 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
         // Create a map
         this.map = this.getOcean().create(sizeX, sizeY);
         this.opponentMap = this.getOcean().create(sizeX, sizeY);
-
-        if (this.hitMap == null) {
-            this.hitMap = new int[this.sizeX][this.sizeY];
-        }
+        this.hitMap = new int[this.sizeX][this.sizeY];
 
         for (ShipPlacement shipPlacement : this.getShipPlacer().placeShips(sizeX, sizeY, fleet)) {
             board.placeShip(shipPlacement.getPosition(), shipPlacement.getShip(), shipPlacement.isVertical());
@@ -120,13 +119,12 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
         if (hit) {
             this.map[position.x][position.y] = 2;
-
+            this.hitMap[position.x][position.y] += 1;
+            
+          
             for (ITactic tactic : this.tactics) {
                 tactic.isSuccessfulHit(position, this.map);
             }
-
-            this.hitMap[position.x][position.y]++;
-
         } else {
             if (this.map[position.x][position.y] <= 0) {
                 this.map[position.x][position.y] = 1;
@@ -171,8 +169,18 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
     @Override
     public void endRound(int round, int points, int enemyPoints) {
-//        System.out.println("Round #" + round);
-//         getHits();
+        //System.out.println("Round #" + round);
+       // getHits();
+        if (DEBUG_MODE) {
+            Heatmap heatmap = heatmapCalculator.calculateHeatmap(this.sizeX, this.sizeY, this.hitMap);
+            this.debugFrame.redrawHeatmapMap(heatmap);
+
+            try {
+                Thread.sleep(DEBUG_SLEEP_TIME);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BaseBattleshipPlayer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
