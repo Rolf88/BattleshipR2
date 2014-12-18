@@ -10,9 +10,8 @@ import r2.tactics.ChessboardTactic;
 import r2.domain.IOcean;
 import r2.domain.IShipPlacer;
 import r2.domain.ITactic;
-import r2.shipPlacers.DefaultShipPlacers;
+import r2.shipPlacers.TestShipPlacer;
 import r2.tactics.AroundTactic;
-import r2.tactics.CenterStepSkipThroughTactic;
 import r2.tactics.RandomTactic;
 import r2.tactics.StepThroughTactic;
 
@@ -26,9 +25,9 @@ public class DefaultBattleshipPlayer extends BaseBattleshipPlayer {
     protected ITactic[] getTactics() {
         return new ITactic[]{
             new AroundTactic(this.sizeX, this.sizeY),
-            new CenterStepSkipThroughTactic(this.sizeX, this.sizeY, 6, 30),
             new ChessboardTactic(this.sizeX, this.sizeY, 0),
-            //new RandomTactic()
+            // These should not be called!! ;)
+            //new RandomTactic(),
             new StepThroughTactic()
         };
     }
@@ -40,7 +39,7 @@ public class DefaultBattleshipPlayer extends BaseBattleshipPlayer {
 
     @Override
     protected IShipPlacer getShipPlacer() {
-        return new DefaultShipPlacers();
+        return new TestShipPlacer();
     }
 
 }

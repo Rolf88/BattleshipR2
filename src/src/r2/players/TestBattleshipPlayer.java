@@ -12,9 +12,9 @@ import r2.domain.ITactic;
 import r2.shipPlacers.DefaultShipPlacers;
 import r2.tactics.AroundTactic;
 import r2.tactics.CenterStepSkipThroughTactic;
-import r2.tactics.CenterStepThroughTactic;
 import r2.tactics.ChessboardTactic;
 import r2.tactics.RandomTactic;
+import r2.tactics.StepThroughTactic;
 
 /**
  *
@@ -25,13 +25,11 @@ public class TestBattleshipPlayer extends BaseBattleshipPlayer {
     @Override
     protected ITactic[] getTactics() {
         return new ITactic[]{
-            //new WallStepThroughTactic(this.sizeX, this.sizeY)
-             new AroundTactic(this.sizeX, this.sizeY),
-            // new ChessboardTactic(this.sizeX, this.sizeY, 2),
-            //new CircleTactic(this.sizeX, this.sizeY),
-            //new CenterStepThroughTactic(this.sizeX, this.sizeY),
-            new CenterStepSkipThroughTactic(this.sizeX, this.sizeY, 1, 101), 
-            new RandomTactic()
+            new AroundTactic(this.sizeX, this.sizeY),
+            new CenterStepSkipThroughTactic(this.sizeX, this.sizeY, 6, 30),
+            new ChessboardTactic(this.sizeX, this.sizeY, 0),
+            //new RandomTactic()
+            new StepThroughTactic()
         };
     }
 

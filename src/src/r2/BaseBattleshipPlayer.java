@@ -24,9 +24,9 @@ import r2.domain.models.ShipPlacement;
  */
 public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
-    private final static boolean DEBUG_MODE = true;
+    private final static boolean DEBUG_MODE = false;
     private final static int DEBUG_SLEEP_TIME = 5;
-    private final static int DEBUG_INTERVAL = 20;
+    private final static int DEBUG_INTERVAL = 1;
     private static int number = 0;
 
     private final HeatmapCalculator heatmapCalculator = new HeatmapCalculator();

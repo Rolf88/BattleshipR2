@@ -6,25 +6,25 @@
 package r2;
 
 import battleship.interfaces.BattleshipsPlayer;
-import r2.players.DefaultBattleshipPlayer;
+import r2.players.TestBattleshipPlayer;
 import tournament.player.PlayerFactory;
 
 /**
  *
  * @author Tobias Grundtvig
  */
-public class DefaultPlayerFactory implements PlayerFactory<BattleshipsPlayer> {
+public class TestPlayerFactory implements PlayerFactory<BattleshipsPlayer> {
 
     private static int nextID = 1;
     private final int id;
 
-    public DefaultPlayerFactory() {
+    public TestPlayerFactory() {
         id = nextID++;
     }
 
     @Override
     public BattleshipsPlayer getNewInstance() {
-        return new DefaultBattleshipPlayer();
+        return new TestBattleshipPlayer();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class DefaultPlayerFactory implements PlayerFactory<BattleshipsPlayer> {
 
     @Override
     public String getName() {
-        return "R2 player " + id;
+        return "R2 Test player " + id;
     }
 
 }
