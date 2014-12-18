@@ -36,7 +36,7 @@ public class R2 {
      */
     public static void main(String[] args) {
         BattleshipsPlayer player1 = new DefaultBattleshipPlayer();
-        BattleshipsPlayer player2 = new SystematicShotPlayer();
+        BattleshipsPlayer player2 = new TestBattleshipPlayer();
         GameInstance<BattleshipsPlayer> game = Battleships.getSingleGameInstance();
         GameResult res = game.run(player1, player2);
 

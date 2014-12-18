@@ -15,7 +15,6 @@ public class DebugFrame extends JFrame {
 
     private final GridView grid;
     private final GridView grid2;
-    private final HeatmapGridView heatmapGrid;
 
     private Lock lock = new ReentrantLock();
 
@@ -29,9 +28,6 @@ public class DebugFrame extends JFrame {
 
         this.grid = new GridView();
         panel.add(this.grid);
-
-        this.heatmapGrid = new HeatmapGridView();
-        panel.add(this.heatmapGrid);
 
         this.grid2 = new GridView();
         panel.add(this.grid2);
@@ -59,18 +55,6 @@ public class DebugFrame extends JFrame {
 
         try {
             this.grid2.setGrid(arr);
-
-            repaint();
-        } finally {
-            this.lock.unlock();
-        }
-    }
-
-    void redrawHeatmapMap(Heatmap heatmap) {
-        this.lock.lock();
-
-        try {
-            this.heatmapGrid.setGrid(heatmap);
 
             repaint();
         } finally {

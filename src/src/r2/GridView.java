@@ -29,10 +29,8 @@ public class GridView extends JComponent {
 
                 switch (currentValue) {
                     case -1:
-                        g.setColor(Color.WHITE);
-                        break;
                     case 0:
-                        g.setColor(Color.BLACK);
+                        g.setColor(Color.WHITE);
                         break;
                     case 1:
                         g.setColor(Color.YELLOW);
@@ -42,6 +40,9 @@ public class GridView extends JComponent {
                         break;
                     case 3:
                         g.setColor(Color.GREEN);
+                        break;
+                    case 4:
+                        g.setColor(Color.LIGHT_GRAY);
                         break;
                     default:
                         g.setColor(Color.BLUE);
