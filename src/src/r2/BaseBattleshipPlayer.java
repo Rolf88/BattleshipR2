@@ -93,6 +93,7 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
     @Override
     public void incoming(Position pos) {
+
         if (DEBUG_MODE && (number % DEBUG_INTERVAL) == 0) {
             try {
                 Thread.sleep(DEBUG_SLEEP_TIME);
@@ -124,7 +125,7 @@ public abstract class BaseBattleshipPlayer implements BattleshipsPlayer {
 
         if (hit) {
             this.map[position.x][position.y] = 2;
-
+            
             for (ITactic tactic : this.tactics) {
                 tactic.isSuccessfulHit(position, this.map);
             }

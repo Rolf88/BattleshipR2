@@ -10,6 +10,10 @@ import r2.domain.IOcean;
 import r2.domain.IShipPlacer;
 import r2.domain.ITactic;
 import r2.shipPlacers.DefaultShipPlacers;
+import r2.tactics.AroundTactic;
+import r2.tactics.CenterStepSkipThroughTactic;
+import r2.tactics.CenterStepThroughTactic;
+import r2.tactics.ChessboardTactic;
 import r2.tactics.RandomTactic;
 
 /**
@@ -22,10 +26,11 @@ public class TestBattleshipPlayer extends BaseBattleshipPlayer {
     protected ITactic[] getTactics() {
         return new ITactic[]{
             //new WallStepThroughTactic(this.sizeX, this.sizeY)
-            // new AroundTactic(this.sizeX, this.sizeY),
+             new AroundTactic(this.sizeX, this.sizeY),
             // new ChessboardTactic(this.sizeX, this.sizeY, 2),
             //new CircleTactic(this.sizeX, this.sizeY),
-            // new CenterStepThroughTactic(this.sizeX, this.sizeY),
+            //new CenterStepThroughTactic(this.sizeX, this.sizeY),
+            new CenterStepSkipThroughTactic(this.sizeX, this.sizeY, 1, 101), 
             new RandomTactic()
         };
     }

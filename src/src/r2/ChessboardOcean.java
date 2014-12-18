@@ -8,8 +8,8 @@ public class ChessboardOcean implements IOcean {
     public int[][] create(int columns, int rows) {
         int[][] map = new int[columns][rows];
 
-        for (int x = 0; x < columns; x++) {
-            for (int y = 0; y < rows; y++) {
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
                 boolean isWhite = ((y + x) % 2) == 0;
 
                 if (isWhite) {
